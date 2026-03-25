@@ -65,7 +65,7 @@ export default function GestureCamera() {
   // --- 1. FETCH LEADERBOARD ---
   const fetchLeaderboard = async () => {
     try {
-        const res = await fetch('http://localhost:8000/api/leaderboard');
+        const res = await fetch('https://live-puzzle-api.onrender.com');
         if (res.ok) {
             const data = await res.json();
             setLeaderboard(data);
@@ -163,7 +163,7 @@ export default function GestureCamera() {
       }
 
       try {
-          const response = await fetch('http://localhost:8000/api/score', {
+          const response = await fetch('https://live-puzzle-api.onrender.com', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ name: cleanName, level: level }) // 시간 대신 레벨 전송
