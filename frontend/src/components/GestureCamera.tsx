@@ -9,7 +9,7 @@ const PINCH_THRESHOLD = 0.05;
 const FRAME_THRESHOLD = 0.1;
 const RESET_DWELL_MS = 1500; 
 
-// 기존의 ROWS, COLS 상수는 삭제하고 동적으로 관리합니다.
+
 type GameState = 'SCANNING' | 'PLAYING' | 'GAME_OVER' | 'LEADERBOARD';
 
 type LeaderboardEntry = {
@@ -24,7 +24,7 @@ export default function GestureCamera() {
   const [gameState, setGameState] = useState<GameState>('SCANNING');
   const [error, setError] = useState<string | null>(null);
   
-  // 🌟 [추가] 서바이벌 모드 상태 관리
+  // 서바이벌 모드 상태 관리
   const [level, setLevel] = useState(1);
   const [timeLeft, setTimeLeft] = useState(10.0); // 1단계는 10초 시작
   const gridSize = level + 1; // Level 1 -> 2x2, Level 2 -> 3x3
@@ -114,7 +114,7 @@ export default function GestureCamera() {
     startCamera();
   }, []);
 
-  // 🌟 [변경] 4. COUNTDOWN TIMER LOGIC ---
+  // 4. COUNTDOWN TIMER LOGIC ---
   useEffect(() => {
     let interval: number;
     if (gameState === 'PLAYING') {
@@ -264,7 +264,7 @@ export default function GestureCamera() {
                             }
                             
                             puzzleImageCanvasRef.current = cropCanvas;
-                            // 🌟 첫 시작은 무조건 2x2 (gridSize = 2)
+                            //  첫 시작은  2x2 (gridSize = 2)
                             puzzleTilesRef.current = generatePuzzleState(2, 2);
                             gameBoardCoordsRef.current = { ...c };
                             setLevel(1);
@@ -377,7 +377,7 @@ export default function GestureCamera() {
                           
                           playSound('drop'); 
 
-                          // 🌟 [핵심] 클리어 시 레벨업 및 시간 추가
+                          // 클리어 시 레벨업 및 시간 추가
                           if (checkWinCondition(newTiles)) {
                               playSound('win'); 
                               

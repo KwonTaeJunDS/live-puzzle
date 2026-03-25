@@ -20,7 +20,7 @@ export default function App() {
         <GestureCamera />
       </div>
 
-      {/* 🌟 하단 크레딧 (원작자 리스펙트) */}
+      {/* 하단 크레딧 (원작자 리스펙트) */}
       <div className="absolute bottom-4 left-0 right-0 text-center z-10 pointer-events-none">
         <p className="text-zinc-500 text-[10px] uppercase tracking-widest">
             Inspired by <a href="https://www.instagram.com/byisabellek" target="_blank" rel="noreferrer" className="text-[#ccff00] hover:underline pointer-events-auto">@byisabellek</a>
