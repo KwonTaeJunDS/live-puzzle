@@ -15,8 +15,9 @@ app.add_middleware(
 )
 
 # Supabase URL, KEY
-SUPABASE_URL = "https://ftfckudokhcwvdmezcxp.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ0ZmNrdWRva2hjd3ZkbWV6Y3hwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzODAwNDksImV4cCI6MjA4OTk1NjA0OX0.sWSCYvnTGUpMqOUKj3-biMDKmtBtP1xbuRtMa_9skbM"
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
 
 # Supabase 클라이언트 연결
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
