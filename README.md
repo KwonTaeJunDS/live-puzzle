@@ -7,6 +7,9 @@
 
 An innovative, end-to-end interactive puzzle game built with real-time AI hand-tracking technology. Frame the real world with your hands, snap a picture, and solve the puzzle by pinching and dragging in thin air!
 
+# game link
+[link](https://live-puzzle-beige.vercel.app/)
+
 [🇰🇷 한국어 설명은 아래에 있습니다. (Korean description below)](#-한국어-설명-korean)
 
 ---
