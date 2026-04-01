@@ -8,6 +8,9 @@ import { playSound } from '../utils/audio';
 const PINCH_THRESHOLD = 0.05; 
 const FRAME_THRESHOLD = 0.1;
 const RESET_DWELL_MS = 1500; 
+const API_BASE_URL = 'https://live-puzzle-api.onrender.com';
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 
 type GameState = 'SCANNING' | 'PLAYING' | 'GAME_OVER' | 'LEADERBOARD';
@@ -63,23 +66,43 @@ export default function GestureCamera() {
   const fistHoldStartRef = useRef<number | null>(null); 
 
   // --- 1. FETCH LEADERBOARD ---
-  const fetchLeaderboard = async () => {
-    try {
-        const res = await fetch('https://live-puzzle-api.onrender.com/api/leaderboeard');
-        if (res.ok) {
-            const data = await res.json();
-            setLeaderboard(data);
-            setIsConnected(true);
-        } else {
-            setIsConnected(false);
+  const fetchLeaderboard = async (retries = 2) => {
+    for (let attempt = 0; attempt <= retries; attempt += 1) {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/leaderboard`);
+        if (!res.ok) {
+          throw new Error(`Leaderboard request failed with ${res.status}`);
         }
-    } catch (err) {
-        setIsConnected(false);
+
+        const data = await res.json();
+        setLeaderboard(data);
+        setIsConnected(true);
+        return true;
+      } catch (err) {
+        if (attempt === retries) {
+          setIsConnected(false);
+          return false;
+        }
+
+        await wait(1500 * (attempt + 1));
+      }
     }
+
+    return false;
   };
 
   useEffect(() => {
-    fetchLeaderboard();
+    fetchLeaderboard(gameState === 'LEADERBOARD' ? 3 : 1);
+  }, [gameState]);
+
+  useEffect(() => {
+    if (gameState !== 'LEADERBOARD') return;
+
+    const interval = window.setInterval(() => {
+      fetchLeaderboard(1);
+    }, 15000);
+
+    return () => window.clearInterval(interval);
   }, [gameState]);
 
   // --- 2. INITIALIZE MEDIAPIPE ---
@@ -163,7 +186,7 @@ export default function GestureCamera() {
       }
 
       try {
-          const response = await fetch('https://live-puzzle-api.onrender.com/api/score', {
+          const response = await fetch(`${API_BASE_URL}/api/score`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ name: cleanName, level: level }) // 시간 대신 레벨 전송
